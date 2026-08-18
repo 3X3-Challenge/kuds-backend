@@ -4,16 +4,29 @@
   "private": true,
   "description": "Auth + game-progress backend for the 3x3 Ky Uc Di San game",
   "main": "dist/server.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "prisma generate && tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
+    "admin:create": "tsx src/scripts/create-admin.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "smoke": "node scripts/smoke-test.mjs",
+    "check:google": "tsx scripts/google-token-check.mts",
+    "cleanup:smoke": "tsx src/scripts/cleanup-smoke.ts",
+    "publish:content": "tsx src/scripts/publish-content.ts",
+    "cleanup:smoke:apply": "tsx src/scripts/cleanup-smoke.ts --apply",
+    "publish:content:apply": "tsx src/scripts/publish-content.ts --apply"
   },
   "dependencies": {
+    "@fastify/cors": "^11.3.0",
+    "@fastify/rate-limit": "^11.2.0",
     "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",

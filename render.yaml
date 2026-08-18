@@ -1,0 +1,48 @@
+# Blueprint cho Render (https://render.com/docs/blueprint-spec).
+# Trên Render: New > Blueprint > chọn repo này, nó đọc file này và dựng service.
+#
+# Vì sao `--include=dev`: NODE_ENV=production ở dưới được Render áp dụng cho CẢ
+# bước build, mà `npm ci` khi thấy NODE_ENV=production sẽ bỏ qua devDependencies
+# — tức là không có `typescript` lẫn `prisma` để chạy `npm run build`. Cờ này ép
+# cài đủ. Đây là lỗi build hay gặp nhất khi lên Render lần đầu.
+services:
+  - type: web
+    name: kuds-backend
+    runtime: node
+    # Cùng vùng với Supabase (ap-southeast-1) để mỗi truy vấn DB không đi vòng
+    # nửa vòng trái đất.
+    region: singapore
+    plan: free
+    branch: main
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    # Render ping đường dẫn này để biết service còn sống. Xem app.ts.
+    healthCheckPath: /health
+    envVars:
+      # Bật rate limit toàn cục (app.ts đọc biến này).
+      - key: NODE_ENV
+        value: production
+      # sync: false = Render KHÔNG lấy giá trị từ file này; phải tự điền trong
+      # Dashboard. Cố ý — đây là bí mật, không được nằm trong git.
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_JWT_SECRET
+        generateValue: true
+      - key: GOOGLE_CLIENT_IDS
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: ACCESS_TOKEN_TTL
+        value: 15m
+      - key: REFRESH_TOKEN_TTL_DAYS
+        value: "30"
+      - key: MAX_SESSIONS_PER_USER
+        value: "5"
+      - key: SESSION_CLEANUP_INTERVAL_HOURS
+        value: "24"
+      - key: ADMIN_TOKEN_TTL
+        value: 8h
