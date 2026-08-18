@@ -21,6 +21,8 @@
     "check:google": "tsx scripts/google-token-check.mts",
     "cleanup:smoke": "tsx src/scripts/cleanup-smoke.ts",
     "publish:content": "tsx src/scripts/publish-content.ts",
+    "seed:quests": "tsx src/scripts/seed-quests.ts",
+    "seed:quests:apply": "tsx src/scripts/seed-quests.ts --apply",
     "cleanup:smoke:apply": "tsx src/scripts/cleanup-smoke.ts --apply",
     "publish:content:apply": "tsx src/scripts/publish-content.ts --apply"
   },

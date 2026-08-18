@@ -274,6 +274,18 @@ WHERE template_key = 'thu_be_bong_bong';
 --  riêng của từng nhiệm vụ. Admin đặt tên sau, đừng để tên bịa nằm sẵn trong DB.
 --
 --  KHÔNG seed content.quest_objective. Xem phần 9.
+--
+--  ĐÃ CÓ BƯỚC TIẾP: file này vẫn dừng ở vỏ rỗng như trên, nhưng ba nhiệm vụ đó
+--  không dùng được cho tới khi có tên và có mục tiêu. Phần đó nằm ở một kịch bản
+--  RIÊNG, chạy sau khi nạp seed:
+--
+--      npm run seed:quests            # xem trước
+--      npm run seed:quests:apply      # ghi thật
+--
+--  Tách ra chứ không nhét vào đây vì kịch bản đó có bịa: nó tự đặt tên nhiệm vụ
+--  và tự thêm vật phẩm 'buong_dua_nuoc'. Trộn phần bịa vào file "chép nguyên từ
+--  repo" là mất luôn khả năng phân biệt cái nào có nguồn, cái nào do người sau
+--  nghĩ ra. Xem chú thích đầu src/scripts/seed-quests.ts.
 -- =============================================================================
 
 INSERT INTO content.quest (quest_key, title, summary, sort_order) VALUES
